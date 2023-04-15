@@ -1,0 +1,128 @@
+@startuml
+
+class Usuario {
+    -email: String
+    -login: String
+    -senha: string
+}
+
+class Cartao{
+    -numero: String
+    -dataValidade: String
+}
+
+enum BandeiraCartao{
+
+}
+
+class Endereco{
+    -descricao: String
+    -numero: String
+    -rua: String
+}
+
+class Cep{
+    -regiao: String
+
+}
+
+class Cidade{
+
+}
+
+class Estado{
+
+}
+
+class Pessoa_Fisica {
+    -cpf: String
+    -dataNascimento: Date
+}
+
+class Pessoa_Juridica {
+    -cnpj: String
+}
+
+class Telefone{
+
+}
+
+class Produto {
+    -preco: Double
+}
+
+class Carrinho{
+    -precoFinal: Double
+}
+
+class Compra{
+    
+}
+
+enum FormaPagamento{
+
+}
+
+class Pedido{
+    -status:String
+    -estrelas: Double
+}
+
+class Categoria[
+
+]
+
+class Cupom{
+    -desconto: Double
+    -valorMinimo: Double
+}
+
+class Cor{
+
+}
+
+class Tamanho{
+
+}
+
+class Estoque {
+    -quantidade: Integer
+    -cor: String
+    -tamanho: String
+}
+
+
+
+Estado --* Cidade
+Cidade --* Cep
+Endereco -- Cep
+Endereco --|> Usuario
+
+
+Carrinho -- Cupom
+Cupom --* Produto
+Compra o-- Carrinho
+Compra -- FormaPagamento
+Pedido o-- Compra
+
+Cartao o-- BandeiraCartao
+Cartao --|> Usuario
+
+Telefone *--|> Usuario
+
+Cor --* Produto
+Tamanho --* Produto
+Categoria --*Produto
+Cor --* Estoque
+Tamanho --* Estoque
+Produto *--|> Categoria
+
+Usuario --* Produto
+Pessoa_Fisica --|> Usuario
+Pessoa_Juridica --|> Usuario
+Pessoa_Juridica *--* Pessoa_Fisica
+Produto o-- Estoque
+
+
+
+@enduml    
