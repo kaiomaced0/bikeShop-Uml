@@ -12,6 +12,10 @@ class Cartao{
 }
 
 enum BandeiraCartao{
+    -VISA: int
+    -MASTERCARD: int
+    -ELO: int
+    -AMERICAN_EXPRESS: int
 
 }
 
@@ -19,11 +23,7 @@ class Endereco{
     -descricao: String
     -numero: String
     -rua: String
-}
-
-class Cep{
-    -regiao: String
-
+    -cep: String
 }
 
 class Cidade{
@@ -34,13 +34,14 @@ class Estado{
 
 }
 
-class Pessoa_Fisica {
+class PessoaFisica {
     -cpf: String
     -dataNascimento: Date
 }
 
-class Pessoa_Juridica {
+class PessoaJuridica {
     -cnpj: String
+
 }
 
 class Telefone{
@@ -49,28 +50,67 @@ class Telefone{
 
 class Produto {
     -preco: Double
+
+}
+
+class Bike {
+    -tamanho: int
+    -marcha: int
+    -freio: String
+    -cambio: String
+    -aro: int
+    -observacao: String
+}
+
+class Marca{
+
+}
+
+class TipoBike{
+
 }
 
 class Carrinho{
     -precoFinal: Double
+
 }
 
 class Compra{
+    -valorTotal: Double
     
+}
+
+class Pagamento{
+    -token: String
+    -pago: Boolean
+    -codigo: String
 }
 
 enum FormaPagamento{
-
+    -PIX: int
+    -CARTAO_DEBITO: int
+    -CARTAO_CREDITO: int
+    -BOLETO: int
 }
 
 class Pedido{
-    -status:String
-    -estrelas: Double
+    -dataPrevista: String
+    -dataEntrega: String
 }
 
-class Categoria{
-    
+enum statusPedido{
+    -PREPARANDO: int 
+    -EM_ROTA: int 
+    -ENTREGUE: int 
+    -FINALIZADO: int 
+    -CANCELADO: int 
 }
+
+class Avaliacao{
+    -estrela: int
+    -comentario: String
+}
+
 
 class Cupom{
     -desconto: Double
@@ -86,43 +126,59 @@ class Tamanho{
 }
 
 class Estoque {
-    -quantidade: Integer
-    -cor: String
-    -tamanho: String
+    -quantidade: int
+
+}
+
+class ListaProduto{
+    -quantidade: int
+
 }
 
 
 
-Estado --* Cidade
-Cidade --* Cep
-Endereco -- Cep
-Endereco --|> Usuario
+Cidade "*" o--> "1" Estado
+Endereco "*" o--> "1" Cidade
 
 
-Carrinho -- Cupom
-Cupom --* Produto
-Compra o-- Carrinho
-Compra -- FormaPagamento
-Pedido o-- Compra
+Carrinho "*" o--> "1" Cupom
+Carrinho "1" *--> "*" ListaProduto
+Carrinho "*" *--> "1" Usuario
 
-Cartao o-- BandeiraCartao
-Cartao --|> Usuario
+Cupom "1" --> "*" Produto: listaProdutosCupom
 
-Telefone *--|> Usuario
+Compra "*" o--> "1" Endereco
+Compra --|> Carrinho
+Pagamento --|> Compra
 
-Cor --* Produto
-Tamanho --* Produto
-Categoria --*Produto
-Cor --* Estoque
-Tamanho --* Estoque
-Produto *--|> Categoria
+Pedido "*" o--> "1" statusPedido
+Pedido --|> Pagamento
+Pedido "1" *--> "*" Avaliacao
 
-Usuario --* Produto
-Pessoa_Fisica --|> Usuario
-Pessoa_Juridica --|> Usuario
-Pessoa_Juridica *--* Pessoa_Fisica
-Produto o-- Estoque
+Avaliacao "*" o--> "1" Produto
+
+Pagamento "*" --> "1" FormaPagamento
+Pagamento "*" o--> "1" Cartao
+
+Cartao "*" --> "1" BandeiraCartao
+Usuario "1" *--> "*" Cartao 
+Usuario "1" *--> "*" Endereco
+Usuario "1" *--> "*" Telefone
+
+ListaProduto "*" o--> "1" Produto
+
+Produto "*" o--> "1" Cor
+Produto "*" o--> "1" Tamanho
+
+Bike --|> Produto
+Bike "*" o--> "1" Marca
+Bike "*" o--> "1" TipoBike
+
+Usuario "*" --> "*" Produto: listaDesejos
+PessoaFisica --|> Usuario
+PessoaJuridica --|> Usuario
+PessoaJuridica "1" o--> "*" PessoaFisica
+Produto "1" *--> "1" Estoque
 
 
-
-@enduml    
+@enduml
