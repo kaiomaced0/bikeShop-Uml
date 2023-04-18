@@ -136,16 +136,14 @@ class ListaProduto{
 }
 
 
-
 Cidade "*" o--> "1" Estado
 Endereco "*" o--> "1" Cidade
-
 
 Carrinho "*" o--> "1" Cupom
 Carrinho "1" *--> "*" ListaProduto
 Carrinho "*" *--> "1" Usuario
 
-Cupom "1" --> "*" Produto: listaProdutosCupom
+Cupom "*" --> "*" Produto: listaProdutosCupom
 
 Compra "*" o--> "1" Endereco
 Compra --|> Carrinho
