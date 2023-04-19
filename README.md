@@ -5,4 +5,4 @@ e ligações tambem por algo que faça sentido na nova versão.
 
 Nessa UML cada Class tem um "id: Long" e um "nome: String" como padrao.
 
-![alt text](img/Bikeshop_uml.PNG)
+![alt text](img/Bikeshop_UML.PNG)
