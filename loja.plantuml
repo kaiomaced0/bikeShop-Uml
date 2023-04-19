@@ -31,7 +31,7 @@ class Cidade{
 }
 
 class Estado{
-
+    sigla: String
 }
 
 class PessoaFisica {
@@ -40,16 +40,19 @@ class PessoaFisica {
 }
 
 class PessoaJuridica {
+    -nomeFantasia: String
     -cnpj: String
 
 }
 
 class Telefone{
-
+    -codigoArea: Integer
+    -numero: Long
 }
 
 class Produto {
     -preco: Double
+    -estoque: Integer
 
 }
 
@@ -58,33 +61,53 @@ class Bike {
     -marcha: int
     -freio: String
     -cambio: String
-    -aro: int
     -observacao: String
+    -marca: String
 }
 
-class Marca{
-
+enum TipoBike{
+    - ROAD_BIKE: int 
+    - MOUNTAIN_BIKE: int 
+    - HYBRID_BIKE: int 
+    - ELECTRIC_BIKE: int 
+    - FOLDING_BIKE: int 
+    - CITY_OR_CRUISER_BIKE: int 
+    - TRIATHLON_BIKE: int 
+    - BMX_BIKE: int 
+    - CYCLOCROSS_BIKE: int 
+    - TOURING_BIKE: int
 }
 
-class TipoBike{
-
-}
-
-class Carrinho{
-    -precoFinal: Double
-
+enum Tamanho{
+    -A4: int
+    -A5: int
+    -A8: int
+    -A12: int
+    -A16: int
+    -A18: int
+    -A20: int
+    -A22: int
+    -A24: int
+    -A26: int
+    -A27: int
+    -A27_5: int
+    -A28: int
+    -A29: int
+    -A650B: int
+    -A700C: int
+    -A_OUTRO: int
+    
 }
 
 class Compra{
     -valorTotal: Double
-    
-}
-
-class Pagamento{
     -token: String
     -pago: Boolean
-    -codigo: String
+    -codigoRastreio: String
+    -dataPrevista: String
+    -dataEntrega: String
 }
+
 
 enum FormaPagamento{
     -PIX: int
@@ -93,12 +116,7 @@ enum FormaPagamento{
     -BOLETO: int
 }
 
-class Pedido{
-    -dataPrevista: String
-    -dataEntrega: String
-}
-
-enum statusPedido{
+enum StatusPedido{
     -PREPARANDO: int 
     -EM_ROTA: int 
     -ENTREGUE: int 
@@ -113,25 +131,27 @@ class Avaliacao{
 
 
 class Cupom{
+    -codigo: String
     -desconto: Double
     -valorMinimo: Double
 }
 
-class Cor{
-
+enum Cor{
+    -Vermelho: int
+    -Laranja: int
+    -Amarelo: int
+    -Verde: int
+    -Azul: int
+    -Roxo: int
+    -Rosa: int
+    -Preto: int
+    -Branco: int
+    -Cinza: int
 }
 
-class Tamanho{
-
-}
-
-class Estoque {
-    -quantidade: int
-
-}
-
-class ListaProduto{
-    -quantidade: int
+class ItemCompra{
+    -quantidade: Integer
+    -preco: Double
 
 }
 
@@ -139,44 +159,40 @@ class ListaProduto{
 Cidade "*" o--> "1" Estado
 Endereco "*" o--> "1" Cidade
 
-Carrinho "*" o--> "1" Cupom
-Carrinho "1" *--> "*" ListaProduto
-Carrinho "*" *--> "1" Usuario
+Compra "*" o--> "1" Cupom
+Compra "1" *--> "*" ItemCompra
+Compra "*" *--> "1" Usuario
 
-Cupom "*" --> "*" Produto: listaProdutosCupom
+Cupom "*" --> "*" Produto: ItemComprasCupom
 
 Compra "*" o--> "1" Endereco
-Compra --|> Carrinho
-Pagamento --|> Compra
 
-Pedido "*" o--> "1" statusPedido
-Pedido --|> Pagamento
-Pedido "1" *--> "*" Avaliacao
+Compra "*" o--> "1" StatusPedido
 
-Avaliacao "*" o--> "1" Produto
+Produto "1" o--> "*" Avaliacao
 
-Pagamento "*" --> "1" FormaPagamento
-Pagamento "*" o--> "1" Cartao
+Avaliacao "*" o--> "1" Usuario
+
+Compra "*" --> "1" FormaPagamento
+Compra "*" o--> "1" Cartao
 
 Cartao "*" --> "1" BandeiraCartao
-Usuario "1" *--> "*" Cartao 
-Usuario "1" *--> "*" Endereco
+Usuario "1" o--> "*" Cartao 
+Usuario "1" o--> "*" Endereco
 Usuario "1" *--> "*" Telefone
 
-ListaProduto "*" o--> "1" Produto
+ItemCompra "*" o--> "1" Produto
 
 Produto "*" o--> "1" Cor
-Produto "*" o--> "1" Tamanho
 
 Bike --|> Produto
-Bike "*" o--> "1" Marca
+Bike "*" o--> "1" Tamanho
 Bike "*" o--> "1" TipoBike
 
 Usuario "*" --> "*" Produto: listaDesejos
 PessoaFisica --|> Usuario
 PessoaJuridica --|> Usuario
 PessoaJuridica "1" o--> "*" PessoaFisica
-Produto "1" *--> "1" Estoque
 
 
 @enduml
