@@ -1,12 +1,14 @@
 @startuml
 
 class Usuario {
+    -nome: String
     -email: String
     -login: String
     -senha: string
 }
 
 class Cartao{
+    -nome: String
     -numero: String
     -dataValidade: String
 }
@@ -20,6 +22,7 @@ enum BandeiraCartao{
 }
 
 class Endereco{
+    -nome: String
     -descricao: String
     -numero: String
     -rua: String
@@ -27,22 +30,18 @@ class Endereco{
 }
 
 class Cidade{
+    -nome: String
 
 }
 
 class Estado{
-    sigla: String
+    -nome: String
+    -sigla: String
 }
 
 class PessoaFisica {
     -cpf: String
     -dataNascimento: Date
-}
-
-class PessoaJuridica {
-    -nomeFantasia: String
-    -cnpj: String
-
 }
 
 class Telefone{
@@ -51,6 +50,7 @@ class Telefone{
 }
 
 class Produto {
+    -nome: String
     -preco: Double
     -estoque: Integer
 
@@ -61,19 +61,41 @@ class Bike {
     -freio: String
     -cambio: String
     -observacao: String
-    -marca: String
+}
+
+class Marca {
+    -nome: String
+    -urlSite: String
+    -urlLogo: String
+}
+
+class Fornecedor {
+    -nome: String
+    -cnpj: String
+}
+
+class Freio {
+    -nome: String
+}
+
+class Pneu {
+
+}
+
+class Aro {
+    -nome: String
 }
 
 enum TipoBike{
-    - ROAD_BIKE: int 
-    - MOUNTAIN_BIKE: int 
-    - HYBRID_BIKE: int 
-    - ELECTRIC_BIKE: int 
-    - FOLDING_BIKE: int 
-    - CITY_OR_CRUISER_BIKE: int 
-    - TRIATHLON_BIKE: int 
-    - BMX_BIKE: int 
-    - CYCLOCROSS_BIKE: int 
+    - ROAD_BIKE: int
+    - MOUNTAIN_BIKE: int
+    - HYBRID_BIKE: int
+    - ELECTRIC_BIKE: int
+    - FOLDING_BIKE: int
+    - CITY_OR_CRUISER_BIKE: int
+    - TRIATHLON_BIKE: int
+    - BMX_BIKE: int
+    - CYCLOCROSS_BIKE: int
     - TOURING_BIKE: int
 }
 
@@ -95,7 +117,7 @@ enum Tamanho{
     -A650B: int
     -A700C: int
     -A_OUTRO: int
-    
+
 }
 
 class Compra{
@@ -116,11 +138,11 @@ enum FormaPagamento{
 }
 
 enum StatusPedido{
-    -PREPARANDO: int 
-    -EM_ROTA: int 
-    -ENTREGUE: int 
-    -FINALIZADO: int 
-    -CANCELADO: int 
+    -PREPARANDO: int
+    -EM_ROTA: int
+    -ENTREGUE: int
+    -FINALIZADO: int
+    -CANCELADO: int
 }
 
 class Avaliacao{
@@ -130,6 +152,7 @@ class Avaliacao{
 
 
 class Cupom{
+    -nome: String
     -codigo: String
     -desconto: Double
     -valorMinimo: Double
@@ -148,21 +171,29 @@ enum Cor{
     -Cinza: int
 }
 
+class Categoria{
+    -nome: String
+}
+
 class ItemCompra{
     -quantidade: Integer
     -preco: Double
 
 }
 
+class Ferramenta{
 
-Cidade "*" o--> "1" Estado
+}
+
+
+Cidade "*" *--> "1" Estado
 Endereco "*" o--> "1" Cidade
 
 Compra "*" o--> "1" Cupom
 Compra "1" *--> "*" ItemCompra
 Compra "*" *--> "1" Usuario
 
-Cupom "*" --> "*" Produto: ItemComprasCupom
+Cupom "*" o--> "*" Produto: ItemComprasCupom
 
 Compra "*" o--> "1" Endereco
 
@@ -172,26 +203,36 @@ Produto "1" o--> "*" Avaliacao
 
 Avaliacao "*" o--> "1" Usuario
 
-Compra "*" --> "1" FormaPagamento
+Compra "*" o--> "1" FormaPagamento
 Compra "*" o--> "1" Cartao
 
-Cartao "*" --> "1" BandeiraCartao
-Usuario "1" o--> "*" Cartao 
-Usuario "1" o--> "*" Endereco
-Usuario "1" *--> "*" Telefone
+Cartao "*" o--> "1" BandeiraCartao
+Cartao "*" *--> "1" Usuario
+Endereco "*" *--> "1" Usuario
+Telefone "*" *--> "1" Usuario
 
-ItemCompra "*" o--> "1" Produto
+ItemCompra "*" *--> "1" Produto
 
 Produto "*" o--> "1" Cor
+
+Ferramenta --|> Produto
 
 Bike --|> Produto
 Bike "*" o--> "1" Tamanho
 Bike "*" o--> "1" TipoBike
+Bike "*" --> "1" Freio
+
+Produto "*" o--> "1" Marca
+Marca "*" --> "1" Fornecedor
+
+Pneu --|> Produto
+
+Pneu "*" o--> "1" Aro
 
 Usuario "*" --> "*" Produto: listaDesejos
 PessoaFisica --|> Usuario
-PessoaJuridica --|> Usuario
-PessoaJuridica "1" o--> "*" PessoaFisica
+
+Produto "*" o--> "*" Categoria
 
 
 @enduml
